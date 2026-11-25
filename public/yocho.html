@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0a090d">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>夜蝶 - Y O C H O - HOST CLUB</title>
+  <style>
+    :root{--bg-dark:#0a090d;--card-bg:#15131c;--gold:#d4af37;--gold-light:#f3e5ab;--crimson:#8b0023;--text-main:#f5f5f5;--text-muted:#a09cb0}
+    *{box-sizing:border-box;margin:0;padding:0}
+    [hidden]{display:none!important}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg-dark);color:var(--text-main);font-family:"Noto Serif TC","Hiragino Mincho ProN",serif;line-height:1.6}
+    header{background:linear-gradient(180deg,rgba(10,9,13,.97),rgba(21,19,28,.9));border-bottom:1px solid var(--gold);padding:1.5rem 1rem;text-align:center;position:sticky;top:0;z-index:10;backdrop-filter:blur(12px)}
+    .jp-title{font-size:.9rem;letter-spacing:.4em;color:var(--gold)}
+    h1{font-size:clamp(1.2rem,5vw,2.5rem);letter-spacing:.08em;color:var(--gold-light);text-shadow:0 0 15px rgba(212,175,55,.5)}
+    .subtitle{color:var(--text-muted);font-size:.85rem;margin-top:.5rem}
+    .container{max-width:1200px;margin:0 auto;padding:1.5rem 1rem 4rem}
+    .section-title{text-align:center;font-size:clamp(1.25rem,3vw,1.8rem);color:var(--gold);margin:2.5rem 0 1.5rem;letter-spacing:.12em;border-bottom:1px solid rgba(212,175,55,.3);padding-bottom:.6rem}
+    .top3-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:1.5rem}
+    .host-card{background:var(--card-bg);border:1px solid rgba(212,175,55,.4);border-radius:8px;overflow:hidden;transition:transform .3s ease,box-shadow .3s ease}
+    .host-card:hover{transform:translateY(-5px);box-shadow:0 10px 25px rgba(212,175,55,.2)}
+    .rank-badge{background:linear-gradient(45deg,#b8860b,#f3e5ab);color:#000;font-weight:bold;padding:.4rem 1rem;text-align:center;letter-spacing:.1em}
+    .photo-box{position:relative;min-height:300px;height:clamp(300px,38vw,360px);background:radial-gradient(ellipse at 50% 35%,#38283b 0%,#1e1b29 48%,#13111a 100%);display:flex;align-items:center;justify-content:center;color:#c2b8c9;border-bottom:1px solid rgba(212,175,55,.2);text-align:center;padding:1rem}
+    .photo-box.is-body{aspect-ratio:.52;height:auto;min-height:0;padding:0;background:#101015}
+    .host-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 42%;transition:object-position .35s ease,transform .35s ease}
+    .photo-box.is-body .host-photo{object-fit:contain;object-position:center;background:#101015}
+    .photo-box.is-close .host-photo{object-position:center 28%;transform:scale(1.12)}
+    .photo-label{position:absolute;left:12px;top:12px;z-index:1;padding:.25rem .6rem;background:rgba(0,0,0,.65);border:1px solid rgba(212,175,55,.55);border-radius:3px;color:var(--gold-light);font-size:.8rem;text-shadow:0 1px 4px #000}
+    .photo-toggle{position:absolute;bottom:10px;right:10px;background:rgba(0,0,0,.8);border:1px solid var(--gold);color:var(--gold);padding:.45rem .7rem;font:inherit;font-size:.8rem;cursor:pointer;border-radius:3px}
+    .host-info{padding:1.5rem}.host-name{font-size:1.5rem;color:var(--gold-light);margin-bottom:.3rem}
+    .host-tag{display:inline-block;background:var(--crimson);color:#fff;font-size:.75rem;padding:.2rem .6rem;border-radius:3px;margin-bottom:1rem}
+    .specs{font-size:.9rem;color:var(--text-muted);margin-bottom:1rem}
+    .quote-box{background:rgba(212,175,55,.08);border-left:3px solid var(--gold);padding:.8rem;font-style:italic;color:var(--gold-light);font-size:.95rem;margin-bottom:1.2rem}
+    .btn-nominate{width:100%;padding:.8rem;background:linear-gradient(90deg,#b8860b,#d4af37);border:0;color:#000;font-weight:bold;font:inherit;font-size:1rem;letter-spacing:.08em;cursor:pointer;border-radius:4px}
+    .btn-nominate:hover{filter:brightness(1.08)}
+    button:focus-visible{outline:3px solid var(--gold-light);outline-offset:3px}
+    .roster-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr));gap:1.2rem}
+    .mini-card{background:var(--card-bg);border:1px solid rgba(255,255,255,.1);padding:1.2rem;border-radius:6px;display:flex;flex-direction:column;align-items:flex-start}
+    .mini-rank{color:var(--gold);font-weight:bold;font-size:.85rem}.mini-name{color:var(--gold-light);margin:.3rem 0}.mini-specs{font-size:.8rem;color:var(--text-muted)}
+    .mini-quote{font-size:.85rem;color:#ddd;margin:.6rem 0 1rem;font-style:italic;flex:1}.mini-card .btn-nominate{padding:.55rem;font-size:.85rem}
+    footer{text-align:center;color:var(--text-muted);padding:1.5rem;border-top:1px solid rgba(212,175,55,.2);font-size:.8rem}
+    .membership-section{scroll-margin-top:180px;margin-top:3.5rem}.membership-lead{text-align:center;color:var(--text-muted);margin:-.7rem 0 1.5rem}.membership-layout{display:grid;grid-template-columns:minmax(250px,.9fr) minmax(280px,1.1fr);gap:1.25rem;align-items:stretch}.member-card{min-height:210px;padding:1.4rem;border-radius:12px;border:1px solid rgba(243,229,171,.5);background:linear-gradient(135deg,#5c3d20,#bd8736 55%,#241a13);box-shadow:0 12px 34px rgba(0,0,0,.3);display:flex;flex-direction:column;justify-content:space-between;color:#fff8e7}.member-card[data-tier="Silver"]{background:linear-gradient(135deg,#41414a,#aaaab2 55%,#26242d)}.member-card[data-tier="Gold"]{background:linear-gradient(135deg,#66450a,#e0bd59 55%,#35250c)}.member-card[data-tier="Diamond"]{background:linear-gradient(135deg,#253a4c,#9bbdd2 55%,#202633)}.member-card[data-tier="Obsidian"]{background:linear-gradient(135deg,#09090c,#3e344b 55%,#111018)}.member-card-top,.member-card-bottom{display:flex;justify-content:space-between;align-items:center;gap:1rem}.member-card-top{font-size:.82rem;letter-spacing:.12em}.member-card-top span:last-child{padding:.2rem .65rem;border:1px solid rgba(255,255,255,.55);border-radius:99px}.member-card-name{font-size:1.18rem;letter-spacing:.14em}.member-card-bottom{align-items:flex-end;font-size:.8rem}.member-card-bottom strong{font-size:1.2rem}.membership-progress,.topup-panel{padding:1.25rem;background:var(--card-bg);border:1px solid rgba(212,175,55,.25);border-radius:8px}.progress-head{display:flex;justify-content:space-between;gap:1rem;align-items:baseline}.progress-head h3,.topup-panel h3{margin:0;color:var(--gold-light)}.progress-head span{color:var(--gold);font-size:.83rem;text-align:right}.progress-track{height:9px;margin:.8rem 0;background:#302b38;border-radius:99px;overflow:hidden}.progress-track span{display:block;width:0;height:100%;background:linear-gradient(90deg,#b8860b,var(--gold-light));border-radius:inherit;transition:width .3s ease}.membership-muted{margin:.35rem 0;color:var(--text-muted);font-size:.85rem}.tier-list{list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.35rem .8rem;margin:1rem 0 0;padding:0}.tier-list li{display:flex;justify-content:space-between;gap:.5rem;padding:.35rem 0;border-bottom:1px solid rgba(255,255,255,.07);font-size:.78rem}.tier-list li span:first-child{color:var(--gold-light)}.tier-list li span:last-child{color:var(--text-muted);text-align:right}.topup-panel{margin-top:1.2rem}.topup-panel h3{margin-bottom:.2rem}.topup-amount-label{display:block;margin:.9rem 0 .4rem;color:var(--gold-light);font-size:.88rem}.topup-controls{display:grid;grid-template-columns:minmax(130px,1fr) auto auto;gap:.6rem}.topup-controls input{min-width:0;width:100%;padding:.65rem .75rem;background:#0e0d12;border:1px solid rgba(255,255,255,.2);border-radius:5px;color:#fff;font:inherit}.topup-controls button{padding:.65rem .85rem;border:1px solid var(--gold);border-radius:5px;background:rgba(212,175,55,.1);color:var(--gold-light);font:inherit;cursor:pointer}.topup-controls button:hover{background:rgba(212,175,55,.2)}.demo-disclaimer{margin:.75rem 0 0;color:#c2a98d;font-size:.77rem}.topup-feedback{min-height:1.5em;margin:.3rem 0 0;color:var(--gold-light);font-size:.85rem}    .topup-success{max-width:620px;margin:1.2rem auto 0;padding:clamp(1.25rem,4vw,2.25rem);text-align:center;background:radial-gradient(ellipse at top,rgba(212,175,55,.12),transparent 65%),var(--card-bg);border:1px solid rgba(212,175,55,.42);border-radius:10px;box-shadow:0 14px 44px rgba(0,0,0,.25)}.success-mark{display:grid;place-items:center;width:58px;height:58px;margin:0 auto .85rem;border:1px solid var(--gold);border-radius:50%;color:var(--gold-light);font:2rem/1 sans-serif;box-shadow:0 0 25px rgba(212,175,55,.2)}.success-eyebrow{color:var(--gold);font-size:.73rem;letter-spacing:.2em}.topup-success h3{margin:.2rem 0;color:var(--gold-light);font-size:1.55rem}.success-message,.success-demo-note{color:var(--text-muted);font-size:.88rem}.success-details{margin:1.2rem 0;padding:.2rem 1rem;border-top:1px solid rgba(212,175,55,.2);border-bottom:1px solid rgba(212,175,55,.2);text-align:left}.success-details div{display:flex;justify-content:space-between;gap:1rem;padding:.65rem 0;border-bottom:1px solid rgba(255,255,255,.07)}.success-details div:last-child{border-bottom:0}.success-details dt{color:var(--text-muted)}.success-details dd{margin:0;color:var(--gold-light);text-align:right}.success-demo-note{color:#c2a98d;font-size:.77rem}.member-nav{display:block;width:max-content;margin:.8rem auto;color:var(--gold-light);font-size:.88rem;text-decoration:underline;text-underline-offset:4px}
+    @media(max-width:700px){.membership-layout{grid-template-columns:1fr}.topup-controls{grid-template-columns:1fr 1fr}.topup-controls input{grid-column:1/-1}.progress-head{align-items:flex-start;flex-direction:column;gap:.15rem}}
+    .booking-panel{max-width:760px;margin:2rem auto;padding:clamp(1rem,4vw,2rem);background:var(--card-bg);border:1px solid rgba(212,175,55,.35);border-radius:10px}.booking-intro{text-align:center;margin-bottom:1.5rem}.booking-intro h2{color:var(--gold);margin:0 0 .4rem}.booking-intro p,.booking-note{color:var(--text-muted);font-size:.85rem}.booking-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}.booking-field{display:flex;flex-direction:column;gap:.4rem}.booking-field.full{grid-column:1/-1}.booking-field label,.booking-legend{color:var(--gold-light);font-size:.9rem}.booking-field input,.booking-field select{width:100%;min-height:46px;padding:.7rem .8rem;border:1px solid rgba(255,255,255,.2);border-radius:5px;background:#0e0d12;color:#fff;font:inherit}.booking-field input:focus,.booking-field select:focus{outline:2px solid var(--gold);outline-offset:2px}.booking-check{display:flex;align-items:center;gap:.6rem;min-height:46px;padding:.55rem .75rem;border:1px solid rgba(255,255,255,.2);border-radius:5px;background:#0e0d12}.booking-check input{width:18px;min-height:18px;accent-color:var(--gold)}.booking-submit{width:100%;min-height:50px;margin-top:1.5rem;border:0;border-radius:5px;background:linear-gradient(90deg,#b8860b,var(--gold));color:#111;font:inherit;font-weight:bold;cursor:pointer}.booking-back{display:block;width:max-content;margin:1rem auto;color:var(--gold-light);cursor:pointer;background:none;border:0;font:inherit;text-decoration:underline;text-underline-offset:4px}.booking-result{display:none;margin-top:1rem;padding:1rem;border:1px solid var(--gold);border-radius:6px;color:var(--gold-light);background:rgba(212,175,55,.08)}
+    @media(max-width:600px){.booking-fields{grid-template-columns:1fr}.booking-field.full{grid-column:auto}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important}}
+    .header-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem;margin-top:.35rem}.header-actions .member-nav{margin:.2rem}.member-card-bottom{display:grid;grid-template-columns:1fr 1fr;align-items:end}.member-card-bottom div{display:flex;flex-direction:column;gap:.25rem}.member-card-bottom strong{font-size:1.05rem}.ranking-entry{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;margin:2.5rem 0;padding:clamp(1.2rem,4vw,2rem);background:radial-gradient(ellipse at top right,rgba(212,175,55,.1),transparent 60%),var(--card-bg);border:1px solid rgba(212,175,55,.3);border-radius:10px}.ranking-entry h2,.ranking-screen-header h2,.donation-success h2{margin:.2rem 0 .5rem;color:var(--gold-light)}.ranking-entry p:not(.success-eyebrow){color:var(--text-muted);margin:.35rem 0}.ranking-entry .booking-submit{width:auto;min-width:220px;margin:0;padding:.8rem 1rem}.ranking-entry .demo-disclaimer{font-size:.8rem}.rose-purchase-summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem;margin:1rem 0;padding:1rem;background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.2);border-radius:7px}.rose-purchase-summary div{display:flex;flex-direction:column;gap:.3rem}.rose-purchase-summary span{color:var(--text-muted);font-size:.82rem}.rose-purchase-summary strong{color:var(--gold-light)}.ranking-screen{max-width:1080px;margin:2rem auto;padding:clamp(1rem,4vw,2rem)}.ranking-screen-header{text-align:center;margin-bottom:1.2rem}.ranking-screen-header>p:not(.success-eyebrow){color:var(--text-muted)}.token-pill{display:inline-flex;align-items:center;gap:.5rem;margin-top:1rem;padding:.5rem 1rem;border:1px solid rgba(212,175,55,.45);border-radius:99px;color:var(--text-muted)}.token-pill strong{color:var(--gold-light)}.ranking-columns{display:grid;grid-template-columns:minmax(0,.85fr) minmax(320px,1.15fr);gap:1rem}.ranking-panel{padding:1.25rem;background:var(--card-bg);border:1px solid rgba(212,175,55,.25);border-radius:8px}.ranking-panel h3{color:var(--gold-light);margin:0 0 1rem}.ranking-panel .booking-field{margin:1rem 0}.live-board{max-height:600px;overflow:auto}.ranking-list{display:grid;gap:.45rem;margin:0;padding:0;list-style:none;counter-reset:rank}.ranking-list li{display:flex;align-items:center;gap:.75rem;padding:.65rem .7rem;border-bottom:1px solid rgba(255,255,255,.07);color:var(--text-muted)}.ranking-list li:first-child{color:var(--gold-light);background:rgba(212,175,55,.08)}.ranking-position{min-width:2.3rem;color:var(--gold);font-variant-numeric:tabular-nums}.ranking-host{flex:1;color:#f4efe4}.ranking-score{color:var(--gold-light);white-space:nowrap}.donation-success{text-align:center}.donation-success .success-mark{margin:0 auto .85rem}.donation-success .ranking-panel{text-align:left;margin:1rem 0}.donation-success .booking-submit{margin-top:.5rem}.donation-success .booking-back{margin-bottom:0}
+    @media(max-width:700px){.ranking-entry{align-items:stretch;flex-direction:column}.ranking-entry .booking-submit{width:100%;min-width:0}.ranking-columns{grid-template-columns:1fr}.live-board{max-height:450px}.rose-purchase-summary{grid-template-columns:1fr 1fr}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="jp-title">今夜、あなたの運命を指名する</div>
+    <h1>夜蝶 - Y O C H O -</h1>
+    <p class="subtitle">HOST CLUB</p>
+    <p class="subtitle">YOUR NIGHT, YOUR PRINCE.</p>
+    <nav class="header-actions" aria-label="主要導覽"><a class="member-nav" href="/menu.html">餐點菜單 / フードメニュー</a><a class="member-nav" href="#membership">會員卡與儲值</a><a class="member-nav" id="open-ranking-nav" href="#rose-purchase-view">線上打榜</a></nav>
+  </header>
+  <main class="container">
+    <div id="club-home">
+      <h2 class="section-title">ROYAL RANKING TOP 3</h2>
+      <div class="top3-grid" id="top3-container"></div>
+      <h2 class="section-title">CAST LIST（全店指名一覽 No.04 - No.20）</h2>
+      <div class="roster-grid" id="roster-container"></div>
+      <section class="membership-section" id="membership" aria-labelledby="membership-title">
+        <h2 class="section-title" id="membership-title">夜蝶會員禮遇</h2>
+        <p class="membership-lead">累積儲值升級專屬卡別，解鎖夜蝶會員禮遇。</p>
+        <div class="membership-layout">
+          <article class="member-card" id="member-card" data-tier="Copper" aria-live="polite">
+            <div class="member-card-top"><span>夜蝶 · YOCHO</span><span id="member-tier-label">銅卡</span></div>
+            <div class="member-card-name" id="member-card-name">NOCTURNE MEMBER</div>
+            <div class="member-card-bottom"><div><span>累積儲值</span><strong id="member-total">NT$0</strong></div><div><span>可用餘額</span><strong id="member-balance">NT$0</strong></div></div>
+          </article>
+          <div class="membership-progress">
+            <div class="progress-head"><h3>會員升級進度</h3><span id="next-tier-caption">銅卡門檻 NT$100,000</span></div>
+            <div class="progress-track" role="progressbar" aria-label="距離下一會員卡等級" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="member-progress-bar"></span></div>
+            <p id="member-progress-copy" class="membership-muted">再累積 NT$100,000，即可成為銅卡會員。</p>
+            <ul class="tier-list" id="tier-list"></ul>
+          </div>
+        </div>
+        <div class="topup-panel">
+          <div><h3>會員儲值</h3><p class="membership-muted">可選擇店內儲值或線上儲值體驗。</p></div>
+          <label class="topup-amount-label" for="topup-amount">儲值金額（新台幣）</label>
+          <div class="topup-controls"><input id="topup-amount" type="number" min="1000" step="1000" value="100000" inputmode="numeric"><button type="button" id="store-topup">模擬店內儲值</button><button type="button" id="online-topup">模擬線上儲值</button></div>
+          <p class="demo-disclaimer">純網站互動示意：不會收款、不會建立真實會員資料，儲值金額只在此頁面暫時模擬。</p>
+          <p id="topup-feedback" class="topup-feedback" role="status" aria-live="polite"></p>
+        </div>
+        <section class="topup-success" id="topup-success" hidden aria-labelledby="topup-success-title">
+          <div class="success-mark" aria-hidden="true">✓</div>
+          <p class="success-eyebrow">YOCHO MEMBER SERVICE</p>
+          <h3 id="topup-success-title" tabindex="-1">儲值成功</h3>
+          <p class="success-message">本次儲值已加入模擬累積金額與會員卡可用餘額。</p>
+          <dl class="success-details">
+            <div><dt>儲值方式</dt><dd id="success-method"></dd></div>
+            <div><dt>本次金額</dt><dd id="success-amount"></dd></div>
+            <div><dt>模擬累積儲值</dt><dd id="success-total"></dd></div>
+            <div><dt>目前卡別</dt><dd id="success-tier"></dd></div>
+            <div><dt>會員卡可用餘額</dt><dd id="success-balance"></dd></div>
+          </dl>
+          <p class="success-demo-note">純網站設計展示，未進行任何真實付款或金錢交易。</p>
+          <button class="booking-submit" id="back-to-membership" type="button">返回會員卡</button>
+        </section>
+      </section>
+      <section class="ranking-entry" aria-labelledby="ranking-entry-title"><div><p class="success-eyebrow">YOCHO LIVE RANKING</p><h2 id="ranking-entry-title">線上打榜</h2><p>使用會員卡餘額購買夜蝶，再將夜蝶抖內給喜愛的牛郎，支持即時榜單。</p><p class="demo-disclaimer">每隻夜蝶 NT$10,000；僅供網站互動示意，不會發生真實金錢流向。</p></div><button class="booking-submit" id="open-rose-purchase" type="button">購買夜蝶・前往打榜</button></section>
+    </div>
+    <section id="reservation-view" class="booking-panel" hidden aria-labelledby="booking-title">
+      <div class="booking-intro"><h2 id="booking-title" tabindex="-1">預約你的夜晚</h2><p>填寫以下資料，夜蝶專人將與你確認預約細節。</p></div>
+      <form id="reservation-form">
+        <div class="booking-fields">
+          <div class="booking-field"><label for="guest-name">預約人姓名 *</label><input id="guest-name" name="guestName" autocomplete="name" maxlength="80" required></div>
+          <div class="booking-field"><label for="guest-age">年齡（需年滿 18 歲）*</label><input id="guest-age" name="age" type="number" min="18" max="120" required></div>
+          <div class="booking-field"><label for="party-size">預約人數 *</label><input id="party-size" name="partySize" type="number" min="1" max="20" step="1" value="1" required></div>
+          <fieldset class="booking-field" style="border:0;padding:0;margin:0"><legend class="booking-legend">是否準備包廂</legend><div class="booking-check"><input id="private-room" name="privateRoom" type="checkbox"><label for="private-room">需要包廂</label></div></fieldset>
+          <div class="booking-field"><label for="booking-date">預約日期 *</label><input id="booking-date" name="date" type="date" required></div>
+          <div class="booking-field"><label for="booking-time">預約時刻 *</label><input id="booking-time" name="time" type="time" required></div>
+          <div class="booking-field"><label for="duration">預約時長 *</label><select id="duration" name="duration" required><option value="2" selected>2 小時（最低時長）</option><option value="3">3 小時</option><option value="4">4 小時</option><option value="5">5 小時</option><option value="6">6 小時</option></select><span class="booking-note">最低預約時長為兩小時。</span></div>
+          <div class="booking-field"><label for="alcohol">酒類選擇 *</label><select id="alcohol" name="alcohol" required><option value="" disabled selected>請選擇酒類</option><option>香檳</option><option>威士忌</option><option>葡萄酒</option><option>雞尾酒</option><option>無酒精飲品</option><option>到店再選</option></select></div>
+          <div class="booking-field full"><label for="host-choice">想預約的牛郎 *</label><select id="host-choice" name="host" required></select></div>
+        </div>
+        <button class="booking-submit" type="submit">送出預約需求</button>
+        <p class="booking-note">此示範表單不會付款或自動完成訂位。</p>
+        <div class="booking-result" id="booking-result" role="status" tabindex="-1" aria-live="polite"></div>
+      </form>
+      <button class="booking-back" id="booking-back" type="button">返回牛郎名單</button>
+    </section>
+    <section id="rose-purchase-view" class="booking-panel" hidden aria-labelledby="rose-purchase-title">
+      <div class="booking-intro"><p class="success-eyebrow">YOCHO ROSE CREDIT</p><h2 id="rose-purchase-title" tabindex="-1">購買夜蝶</h2><p>每隻夜蝶 NT$10,000，費用由會員卡可用餘額扣除。完成後即可前往打榜。</p></div>
+      <div class="rose-purchase-summary"><div><span>會員卡可用餘額</span><strong id="rose-purchase-balance">NT$0</strong></div><div><span>夜蝶單價</span><strong>NT$10,000／隻</strong></div></div>
+      <div class="booking-field"><label for="rose-purchase-quantity">購買夜蝶數量</label><input id="rose-purchase-quantity" type="number" min="1" step="1" value="1" inputmode="numeric"><span id="rose-purchase-cost" class="booking-note" aria-live="polite">本次扣款：NT$10,000</span></div>
+      <p class="demo-disclaimer">此為網站互動示意，不會收款或產生真實夜蝶、交易紀錄。</p>
+      <p id="purchase-feedback" class="booking-result" role="status" aria-live="polite"></p>
+      <button class="booking-submit" id="purchase-roses" type="button">確認購買並前往打榜</button>
+      <button class="booking-back" id="purchase-back" type="button">返回會員卡儲值</button>
+    </section>
+    <section id="ranking-view" class="ranking-screen" hidden aria-labelledby="ranking-title">
+      <div class="ranking-screen-header"><p class="success-eyebrow">YOCHO LIVE RANKING</p><h2 id="ranking-title" tabindex="-1">線上打榜</h2><p>選擇想支持的牛郎，將已購買的夜蝶送給他。</p><div class="token-pill">可抖內夜蝶 <strong id="available-roses">0</strong> 隻</div></div>
+      <div class="ranking-columns">
+        <section class="ranking-panel" aria-labelledby="donation-title"><h3 id="donation-title">選擇抖內對象</h3><div class="booking-field"><label for="donation-host">牛郎</label><select id="donation-host"></select></div><div class="booking-field"><label for="donation-quantity">抖內夜蝶數量</label><input id="donation-quantity" type="number" min="1" step="1" value="1" inputmode="numeric"></div><p id="donation-feedback" class="booking-result" role="status" aria-live="polite"></p><button class="booking-submit" id="send-donation" type="button">確認抖內</button><p class="demo-disclaimer">抖內僅更新本頁面模擬排名，不涉及任何真實金錢流向。</p></section>
+        <section class="ranking-panel live-board" aria-labelledby="live-ranking-title"><p class="success-eyebrow">UPDATED IN REAL TIME</p><h3 id="live-ranking-title">即時牛郎排名</h3><ol class="ranking-list" id="ranking-list" aria-live="polite"></ol></section>
+      </div>
+      <button class="booking-back" id="ranking-back" type="button">返回夜蝶購買頁</button>
+    </section>
+    <section id="donation-success-view" class="booking-panel donation-success" hidden aria-labelledby="donation-success-title">
+      <div class="success-mark" aria-hidden="true">✓</div><p class="success-eyebrow">YOCHO LIVE RANKING</p><h2 id="donation-success-title" tabindex="-1">抖內成功</h2><p id="donation-success-copy" class="success-message"></p>
+      <div class="rose-purchase-summary"><div><span>剩餘可抖內夜蝶</span><strong id="remaining-roses">0 隻</strong></div><div><span>目前會員卡餘額</span><strong id="donation-balance">NT$0</strong></div></div>
+      <section class="ranking-panel live-board" aria-labelledby="success-ranking-title"><p class="success-eyebrow">UPDATED IN REAL TIME</p><h3 id="success-ranking-title">即時牛郎排名</h3><ol class="ranking-list" id="success-ranking-list" aria-live="polite"></ol></section>
+      <p class="success-demo-note">本頁面的消費與排名皆為暫時模擬，不會保存資料或進行真實交易。</p>
+      <button class="booking-submit" id="continue-ranking" type="button">繼續抖內</button><button class="booking-back" id="success-home" type="button">返回首頁</button>
+    </section>
+  </main>
+  <footer>夜蝶 - Y O C H O - HOST CLUB · YOUR NIGHT, YOUR PRINCE.</footer>
+  <script>
+    const hosts = [
+      {rank:"No.01 夜蝶の看板ホスト",name:"顧北辰 (Arthur)",tag:"霸道總裁",height:"187cm",sign:"天蠍座",body:"精壯胸肌西裝體型",hobby:"威士忌、私人遊艇",quote:"「女人，妳這是在玩火。全歌舞伎町的香檳塔我都能為妳點亮，但妳的人，今晚只能屬於我。」",bodyPhoto:"https://hebbkx1anhila5yf.public.blob.vercel-storage.com/%E6%95%85%E5%8C%97%E8%BE%B0%E8%85%B9%E8%82%8C-M9lR1tsGLuouKOCnFUQIFYAZ2rT7w2.jpg",top3:true},
+      {rank:"No.02 世界一純情な男",name:"江予安 (Charles)",tag:"純情小奶狗",height:"175cm",sign:"雙魚座",body:"薄肌體型",hobby:"烘焙甜點、彈吉他",quote:"「姊姊，外面的世界太壞了，妳就乖乖待在我懷裡吧？只要妳叫一聲我的名字，我連尾巴都會為妳搖喔。」",photo:"https://hebbkx1anhila5yf.public.blob.vercel-storage.com/S__111378451-mjSx5khbkEO5cpWQEDJ0kIcAttLCCv.jpg",bodyPhoto:"https://hebbkx1anhila5yf.public.blob.vercel-storage.com/%E6%B1%9F%E4%BA%88%E5%AE%89%E5%AF%8C%E5%9F%BA-SWwLWITddqdrkOF4xWfNEbNvMEvsUh.jpg",top3:true},
+      {rank:"No.03 義理人情に厚い男",name:"張家豪 (Eric)",tag:"幽默義氣排球男",height:"180cm",sign:"射手座",body:"自然平肚子運動體型",hobby:"排球、美式脫口秀",quote:"「把煩惱當成排球一樣扣殺掉吧——不過，接住妳這顆直球的心，我可是絕對不會漏接的！」",photo:"https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Gemini_Generated_Image_myrjrpmyrjrpmyrj-sQl0vO4JOiJGpfOX2pHUPwekmIVM49.jpg",bodyPhoto:"https://hebbkx1anhila5yf.public.blob.vercel-storage.com/%E5%BC%B5%E5%AE%B6%E8%B1%AA%E5%AF%8C%E5%9F%BA-1asoonC9JBkpSXn0b2Mpb0gEijbPO8.jpg",top3:true},
+      {rank:"No.04",name:"冷峻王子 (Chris)",tag:"冰山貴族",height:"184cm",sign:"摩羯座",hobby:"古典鋼琴、西洋劍",quote:"「別靠近我，我怕我的冷酷融化在妳眼裡。」"},
+      {rank:"No.05",name:"陸沉舟 (Lucian)",tag:"禁慾系眼鏡醫生",height:"182cm",sign:"處女座",hobby:"推理小說、手沖咖啡",quote:"「妳的心跳過速了，今晚需要我為妳做全身檢查嗎？」"},
+      {rank:"No.06",name:"白夜 (Byakuya)",tag:"視覺系病嬌美男",height:"178cm",sign:"水瓶座",hobby:"哥德搖滾、調配香氛",quote:"「如果這世界不愛妳，那就跟我一起墜入深淵吧。」"},
+      {rank:"No.07",name:"沈星河 (Leo)",tag:"壞壞痞帥浪子",height:"181cm",sign:"獅子座",hobby:"重機改裝、街舞",quote:"「上我的車就別想下車，我可沒有煞車這種東西。」"},
+      {rank:"No.08",name:"林慕白 (Julian)",tag:"溫柔文學教授",height:"179cm",sign:"天秤座",hobby:"古董鋼筆、看展",quote:"「讀過這麼多詩集，卻沒有一首比得上妳的眉眼。」"},
+      {rank:"No.09",name:"周子昂 (Zack)",tag:"狂野拳擊手",height:"185cm",sign:"牡羊座",hobby:"泰拳、重訓健身",quote:"「我能打倒所有對手，卻唯獨敗給妳的一個眼神。」"},
+      {rank:"No.10",name:"蘇瑾言 (Kieran)",tag:"腹黑微笑執事",height:"180cm",sign:"雙子座",hobby:"英式下午茶、西洋棋",quote:"「大小姐，今晚的服侍，您還滿意嗎？」"},
+      {rank:"No.11",name:"葉知秋 (Autumn)",tag:"憂鬱系日系文青",height:"176cm",sign:"巨蟹座",hobby:"底片攝影、雨天散步",quote:"「鏡頭裡裝得下整座城市，卻裝不下我對妳的想念。」"},
+      {rank:"No.12",name:"唐澤宇 (Tyler)",tag:"豪門玩世不恭少爺",height:"183cm",sign:"獅子座",hobby:"跑車收藏、派對DJ",quote:"「刷卡沒有上限，就像我對妳的寵愛沒有底線。」"},
+      {rank:"No.13",name:"許嘉陽 (Sunny)",tag:"元氣偶像練習生",height:"174cm",sign:"雙子座",hobby:"唱跳、夾娃娃",quote:"「全場的燈光都在看我，而我的眼裡只有妳！」"},
+      {rank:"No.14",name:"霍司爵 (Damon)",tag:"危險系黑幫教父風",height:"188cm",sign:"天蠍座",hobby:"雪茄、德州撲克",quote:"「這場愛情的賭局，我押上全部身家，只賭妳愛我。」"},
+      {rank:"No.15",name:"溫景然 (Evan)",tag:"治癒系鄰家哥哥",height:"177cm",sign:"金牛座",hobby:"料理、園藝多肉植物",quote:"「累了就回家吧，我永遠為妳留一盞燈。」"},
+      {rank:"No.16",name:"季寒川 (Kael)",tag:"高冷電競大神",height:"179cm",sign:"水瓶座",hobby:"英雄聯盟、機械鍵盤",quote:"「在遊戲裡我從未輸過，但遇到妳，我甘願投降。」"},
+      {rank:"No.17",name:"程默 (Silas)",tag:"神秘塔羅占卜師",height:"178cm",sign:"雙魚座",hobby:"塔羅牌、水晶礦石",quote:"「牌面說，妳今晚命中註定會愛上我。」"},
+      {rank:"No.18",name:"方澤凱 (Kyle)",tag:"陽光衝浪型男",height:"182cm",sign:"射手座",hobby:"衝浪、潛水攝影",quote:"「海浪再大我都能駕馭，卻差點溺死在妳的溫柔裡。」"},
+      {rank:"No.19",name:"柳清風 (Ryu)",tag:"和風劍道世家少主",height:"181cm",sign:"處女座",hobby:"居合道、茶道",quote:"「我手中的刀斬斷一切迷惘，卻斬不斷對妳的執念。」"},
+      {rank:"No.20",name:"夏宇軒 (Max)",tag:"傲嬌年下小狼狗",height:"176cm",sign:"牡羊座",hobby:"滑板、街頭塗鴉",quote:"「哼，我才不是在等妳來呢……只是剛好沒人陪我喝酒罷了！」"}
+    ];
+    const membershipTiers=[
+      {name:'銅卡',threshold:100000,cardTier:'Copper'},
+      {name:'銀卡',threshold:1100000,cardTier:'Silver'},
+      {name:'金卡',threshold:2100000,cardTier:'Gold'},
+      {name:'鑽石卡',threshold:3100000,cardTier:'Diamond'},
+      {name:'黑曜石卡 Ⅰ',threshold:4100000,cardTier:'Obsidian'},
+      {name:'黑曜石卡 Ⅱ',threshold:9100000,cardTier:'Obsidian'},
+      {name:'黑曜石卡 Ⅲ',threshold:14100000,cardTier:'Obsidian'}
+    ];
+    const formatTwd=value=>`NT$${new Intl.NumberFormat('zh-TW').format(value)}`;
+    let simulatedStoredTotal=0;
+    let simulatedBalance=0;
+    let purchasedButterflies=0;
+    const butterflyPrice=10000;
+    const hostDonationCounts=new Map(hosts.map((host,index)=>[host.name,hosts.length-index]));
+    const tierList=document.getElementById('tier-list');
+    membershipTiers.forEach(tier=>{const item=document.createElement('li');const name=document.createElement('span');const amount=document.createElement('span');name.textContent=tier.name;amount.textContent=formatTwd(tier.threshold);item.append(name,amount);tierList.append(item);});
+    function renderMembership(){
+      let currentIndex=-1;
+      membershipTiers.forEach((tier,index)=>{if(simulatedStoredTotal>=tier.threshold)currentIndex=index;});
+      const currentTier=membershipTiers[currentIndex];
+      const nextTier=membershipTiers[currentIndex+1];
+      const card=document.getElementById('member-card');
+      card.dataset.tier=currentTier?.cardTier||'Copper';
+      document.getElementById('member-tier-label').textContent=currentTier?.name||'未達銅卡';
+      document.getElementById('member-total').textContent=formatTwd(simulatedStoredTotal);
+      document.getElementById('member-balance').textContent=formatTwd(simulatedBalance);
+      document.getElementById('member-card-name').textContent=currentTier?'NOCTURNE MEMBER':'MEMBER PREVIEW';
+      const progress=nextTier?Math.max(0,Math.min(100,((simulatedStoredTotal-(currentTier?.threshold||0))/(nextTier.threshold-(currentTier?.threshold||0)))*100)):100;
+      const progressBar=document.getElementById('member-progress-bar');
+      progressBar.style.width=`${progress}%`;
+      progressBar.parentElement.setAttribute('aria-valuenow',String(Math.round(progress)));
+      document.getElementById('next-tier-caption').textContent=nextTier?`${nextTier.name}門檻 ${formatTwd(nextTier.threshold)}`:'已達最高卡別';
+      document.getElementById('member-progress-copy').textContent=nextTier?`距離${nextTier.name}尚需 ${formatTwd(Math.max(0,nextTier.threshold-simulatedStoredTotal))}。`:'已達黑曜石卡 Ⅲ 最高等級。';
+      [...tierList.children].forEach((item,index)=>item.setAttribute('aria-current',index===currentIndex?'step':'false'));
+    }
+    function addSimulatedTopup(method){
+      const amountInput=document.getElementById('topup-amount');
+      const amount=amountInput.valueAsNumber;
+      if(!Number.isSafeInteger(amount)||amount<1000){amountInput.setCustomValidity('請輸入至少 NT$1,000 的整數金額。');amountInput.reportValidity();amountInput.setCustomValidity('');return;}
+      simulatedStoredTotal+=amount;
+      simulatedBalance+=amount;
+      renderMembership();
+      const currentTier=[...membershipTiers].reverse().find(tier=>simulatedStoredTotal>=tier.threshold);
+      document.getElementById('success-method').textContent=`模擬${method}`;
+      document.getElementById('success-amount').textContent=formatTwd(amount);
+      document.getElementById('success-total').textContent=formatTwd(simulatedStoredTotal);
+      document.getElementById('success-tier').textContent=currentTier?.name||'尚未達銅卡';
+      document.getElementById('success-balance').textContent=formatTwd(simulatedBalance);
+      document.getElementById('membership-title').hidden=true;
+      document.querySelector('.membership-lead').hidden=true;
+      document.querySelector('.membership-layout').hidden=true;
+      document.querySelector('.topup-panel').hidden=true;
+      document.getElementById('topup-success').hidden=false;
+      document.getElementById('topup-success-title').focus({preventScroll:true});
+      document.getElementById('topup-success').scrollIntoView({block:'start'});
+    }
+    document.getElementById('store-topup').addEventListener('click',()=>addSimulatedTopup('店內儲值'));
+    document.getElementById('online-topup').addEventListener('click',()=>addSimulatedTopup('線上儲值'));
+    document.getElementById('back-to-membership').addEventListener('click',()=>{
+      document.getElementById('topup-success').hidden=true;
+      document.getElementById('membership-title').hidden=false;
+      document.querySelector('.membership-lead').hidden=false;
+      document.querySelector('.membership-layout').hidden=false;
+      document.querySelector('.topup-panel').hidden=false;
+      document.getElementById('topup-amount').focus();
+    });
+    renderMembership();
+    const homeView=document.getElementById('club-home');
+    const reservationView=document.getElementById('reservation-view');
+    const purchaseView=document.getElementById('rose-purchase-view');
+    const rankingView=document.getElementById('ranking-view');
+    const donationSuccessView=document.getElementById('donation-success-view');
+    const appViews={
+      'club-home':homeView,
+      'reservation-view':reservationView,
+      'rose-purchase-view':purchaseView,
+      'ranking-view':rankingView,
+      'donation-success-view':donationSuccessView
+    };
+    const hostChoice=document.getElementById('host-choice');
+    const donationHost=document.getElementById('donation-host');
+    hosts.forEach(host=>{
+      [hostChoice,donationHost].forEach(select=>{const option=document.createElement('option');option.value=host.name;option.textContent=host.name;select.append(option);});
+    });
+    function showScreen(screenId,addHistory=true){
+      const activeView=appViews[screenId]||homeView;
+      Object.values(appViews).forEach(view=>{view.hidden=view!==activeView;});
+      if(addHistory)history.pushState({screenId:activeView.id},'',`${location.pathname}${location.search}#${activeView.id}`);
+      window.scrollTo(0,0);
+      activeView.querySelector('h2[tabindex="-1"]')?.focus({preventScroll:true});
+    }
+    function showReservation(name,addHistory=true){
+      if(hosts.some(host=>host.name===name))hostChoice.value=name;
+      document.getElementById('booking-result').style.display='none';
+      showScreen('reservation-view',addHistory);
+      document.getElementById('booking-title').focus({preventScroll:true});
+    }
+    function showClub(){
+      history.replaceState(null,'',location.pathname+location.search);
+      showScreen('club-home',false);
+    }
+    function renderLeaderboard(listId){
+      const list=document.getElementById(listId);
+      const rankedHosts=hosts.map((host,index)=>({host,index,roses:hostDonationCounts.get(host.name)||0})).sort((a,b)=>b.roses-a.roses||a.index-b.index);
+      list.replaceChildren();
+      rankedHosts.forEach((entry,index)=>{
+        const item=document.createElement('li');
+        const position=document.createElement('span');position.className='ranking-position';position.textContent=`${String(index+1).padStart(2,'0')}`;
+        const name=document.createElement('span');name.className='ranking-host';name.textContent=entry.host.name;
+        const score=document.createElement('strong');score.className='ranking-score';score.textContent=`${entry.roses} 隻夜蝶`;
+        item.append(position,name,score);list.append(item);
+      });
+    }
+    function renderLiveRankings(){renderLeaderboard('ranking-list');renderLeaderboard('success-ranking-list');}
+    function updateDonationAvailability(){
+      document.getElementById('available-roses').textContent=String(purchasedButterflies);
+      const quantity=document.getElementById('donation-quantity');
+      quantity.max=String(purchasedButterflies);
+      if(purchasedButterflies>0&&quantity.valueAsNumber>purchasedButterflies)quantity.value=String(purchasedButterflies);
+      document.getElementById('send-donation').disabled=purchasedButterflies<1;
+    }
+    function openRosePurchase(){
+      document.getElementById('rose-purchase-balance').textContent=formatTwd(simulatedBalance);
+      document.getElementById('purchase-feedback').style.display='none';
+      showScreen('rose-purchase-view');
+    }
+    function showRanking(){
+      updateDonationAvailability();
+      document.getElementById('donation-feedback').style.display='none';
+      renderLiveRankings();
+      showScreen('ranking-view');
+    }
+    function showPurchaseFromRanking(){openRosePurchase();}
+    function buyButterflies(){
+      const quantity=document.getElementById('rose-purchase-quantity').valueAsNumber;
+      const feedback=document.getElementById('purchase-feedback');
+      if(!Number.isSafeInteger(quantity)||quantity<1){feedback.textContent='請輸入至少 1 隻夜蝶。';feedback.style.display='block';return;}
+      const cost=quantity*butterflyPrice;
+      if(!Number.isSafeInteger(cost)){feedback.textContent='購買數量超出可處理範圍。';feedback.style.display='block';return;}
+      if(cost>simulatedBalance){feedback.textContent=`會員卡餘額不足。購買 ${quantity} 隻需要 ${formatTwd(cost)}，目前餘額為 ${formatTwd(simulatedBalance)}；請先返回會員卡進行模擬儲值。`;feedback.style.display='block';return;}
+      simulatedBalance-=cost;
+      purchasedButterflies+=quantity;
+      renderMembership();
+      showRanking();
+    }
+    function sendButterflyDonation(){
+      const quantity=document.getElementById('donation-quantity').valueAsNumber;
+      const hostName=donationHost.value;
+      const feedback=document.getElementById('donation-feedback');
+      if(!Number.isSafeInteger(quantity)||quantity<1||quantity>purchasedButterflies){feedback.textContent=`請輸入 1 至 ${purchasedButterflies} 隻夜蝶。`;feedback.style.display='block';return;}
+      const host=hosts.find(item=>item.name===hostName);
+      if(!host){feedback.textContent='請選擇一位牛郎。';feedback.style.display='block';return;}
+      purchasedButterflies-=quantity;
+      hostDonationCounts.set(hostName,(hostDonationCounts.get(hostName)||0)+quantity);
+      document.getElementById('donation-success-copy').textContent=`已將 ${quantity} 隻夜蝶抖內給 ${host.name}，排名已即時更新。`;
+      document.getElementById('remaining-roses').textContent=`${purchasedButterflies} 隻`;
+      document.getElementById('donation-balance').textContent=formatTwd(simulatedBalance);
+      document.getElementById('continue-ranking').textContent=purchasedButterflies>0?'繼續抖內':'再購買夜蝶';
+      renderMembership();
+      renderLiveRankings();
+      showScreen('donation-success-view');
+    }
+    document.getElementById('rose-purchase-quantity').addEventListener('input',event=>{
+      const quantity=event.currentTarget.valueAsNumber;
+      document.getElementById('rose-purchase-cost').textContent=Number.isSafeInteger(quantity)&&quantity>0?`本次扣款：${formatTwd(quantity*butterflyPrice)}`:'請輸入有效數量';
+    });
+    document.getElementById('purchase-roses').addEventListener('click',buyButterflies);
+    document.getElementById('send-donation').addEventListener('click',sendButterflyDonation);
+    document.getElementById('open-rose-purchase').addEventListener('click',openRosePurchase);
+    document.getElementById('open-ranking-nav').addEventListener('click',event=>{event.preventDefault();openRosePurchase();});
+    document.getElementById('purchase-back').addEventListener('click',()=>{
+      showClub();document.getElementById('membership').scrollIntoView({block:'start'});document.getElementById('topup-amount').focus({preventScroll:true});
+    });
+    document.getElementById('ranking-back').addEventListener('click',showPurchaseFromRanking);
+    document.getElementById('continue-ranking').addEventListener('click',()=>purchasedButterflies>0?showRanking():openRosePurchase());
+    document.getElementById('success-home').addEventListener('click',showClub);
+    document.getElementById('booking-back').addEventListener('click',showClub);
+    window.addEventListener('popstate',()=>{
+      const route=location.hash.slice(1);
+      if(route==='ranking-view'){updateDonationAvailability();renderLiveRankings();}
+      if(route==='rose-purchase-view')document.getElementById('rose-purchase-balance').textContent=formatTwd(simulatedBalance);
+      showScreen(appViews[route]?route:homeView.id,false);
+    });
+    const initialRoute=location.hash.slice(1);
+    if(initialRoute==='reservation-view'||initialRoute==='reservation')showReservation('',false);
+    else if(initialRoute&&initialRoute!=='membership')history.replaceState(null,'',location.pathname+location.search);
+    const today=new Date();document.getElementById('booking-date').min=new Date(today.getTime()-today.getTimezoneOffset()*60000).toISOString().slice(0,10);
+    document.getElementById('reservation-form').addEventListener('submit',event=>{event.preventDefault();const data=new FormData(event.currentTarget);const room=data.get('privateRoom')?'需要包廂':'不需要包廂';const result=document.getElementById('booking-result');result.textContent=`預約需求已整理：${data.get('guestName')}，${data.get('age')} 歲，${data.get('partySize')} 人；${room}；${data.get('date')} ${data.get('time')}，${data.get('duration')} 小時；酒類：${data.get('alcohol')}；指名：${data.get('host')}。此示範表單不會送出或保存資料，請由店家專人確認預約。`;result.style.display='block';result.focus();});
+    const top3El=document.getElementById('top3-container');
+    const rosterEl=document.getElementById('roster-container');
+    const escapeHtml=value=>String(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+    hosts.forEach(h=>{
+      if(h.top3){
+        const card=document.createElement('article');
+        card.className='host-card';
+        const photoUrl=h.photo||(h.name.startsWith('顧北辰')?'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/S__111378458-uVDP5yXHjxAlQqEzgQlcDS5CgJOE1E.jpg':null);
+        card.innerHTML=`<div class="rank-badge">${escapeHtml(h.rank)}</div><div class="photo-box">${photoUrl?`<img class="host-photo" src="${photoUrl}" alt="${escapeHtml(h.name)}在酒吧手持香檳的形象照" loading="lazy">`:''}<span class="photo-label">${escapeHtml(h.name)}｜形象照</span><button class="photo-toggle" type="button" aria-label="查看 ${escapeHtml(h.name)} 身材照" aria-pressed="false">看身材照</button></div><div class="host-info"><h3 class="host-name">${escapeHtml(h.name)}</h3><span class="host-tag">${escapeHtml(h.tag)}</span><div class="specs">身高：${escapeHtml(h.height)} ｜ 星座：${escapeHtml(h.sign)}<br>體型：${escapeHtml(h.body)}<br>興趣：${escapeHtml(h.hobby)}</div><blockquote class="quote-box">${escapeHtml(h.quote)}</blockquote><button class="btn-nominate" type="button">指名預約（本指名 / 初回）</button></div>`;
+        card.querySelector('.photo-toggle').addEventListener('click',event=>{const image=card.querySelector('.host-photo');const box=card.querySelector('.photo-box');const label=card.querySelector('.photo-label');const showingBody=image.dataset.view==='body';image.src=showingBody?photoUrl:h.bodyPhoto;image.alt=`${h.name}的${showingBody?'形象照':'身材照'}`;image.dataset.view=showingBody?'portrait':'body';box.classList.toggle('is-body',!showingBody);label.textContent=`${h.name}｜${showingBody?'形象照':'身材照'}`;event.currentTarget.textContent=showingBody?'看身材照':'看形象照';event.currentTarget.setAttribute('aria-label',`查看 ${h.name} ${showingBody?'身材照':'形象照'}`);event.currentTarget.setAttribute('aria-pressed',String(!showingBody));});
+        card.querySelector('.btn-nominate').addEventListener('click',()=>nominate(h.name));
+        top3El.append(card);
+      }else{
+        const card=document.createElement('article');card.className='mini-card';
+        card.innerHTML=`<div class="mini-rank">${escapeHtml(h.rank)} ｜ ${escapeHtml(h.tag)}</div><h3 class="mini-name">${escapeHtml(h.name)}</h3><div class="mini-specs">${escapeHtml(h.height)} / ${escapeHtml(h.sign)} / 興趣：${escapeHtml(h.hobby)}</div><blockquote class="mini-quote">${escapeHtml(h.quote)}</blockquote><button class="btn-nominate" type="button">指名預約</button>`;
+        card.querySelector('button').addEventListener('click',()=>nominate(h.name));rosterEl.append(card);
+      }
+    });
+    function nominate(name){showReservation(name);}
+  </script>
+</body>
+</html>
